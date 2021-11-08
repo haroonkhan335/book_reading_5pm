@@ -7,14 +7,9 @@ class BookReading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: '/',
-      routes: {
-        "/": (context) {
-          return const Splash();
-        },
-        "/home": (context) => Home()
-      },
-    );
+    return MaterialApp(initialRoute: '/', routes: {
+      '/home': (context) => Home(),
+      '/': (context) => Splash(),
+    });
   }
 }

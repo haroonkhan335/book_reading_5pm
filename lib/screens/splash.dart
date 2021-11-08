@@ -1,5 +1,7 @@
 import 'package:book_reading/screens/home.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -9,67 +11,36 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  int count = 0;
-
   @override
   void initState() {
     Future.delayed(Duration(seconds: 2), () {
-      // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      //   return Home();
-      // }));
-      setState(() {
-        hasDataLoaded = true;
-      });
+      Navigator.of(context).pushNamed('/home');
     });
 
     super.initState();
   }
 
-  bool hasDataLoaded = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFCF6F7),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            hasDataLoaded == true ? SizedBox() : CircularProgressIndicator(),
-            Text(
-              hasDataLoaded == true
-                  ? "Data fetching completed"
-                  : 'Loading for data',
-              style: const TextStyle(fontSize: 32),
+            FaIcon(
+              FontAwesomeIcons.bookReader,
+              size: 150,
+              color: Color(0xFFEABCB1),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      count--;
-                    });
-                    print(count);
-                  },
-                  child: const Text(
-                    '-',
-                    style: TextStyle(fontSize: 40),
-                  ),
-                ),
-                SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      count++;
-                    });
-                    print(count);
-                  },
-                  child: const Text(
-                    '+',
-                    style: TextStyle(fontSize: 40),
-                  ),
-                ),
-              ],
+            SizedBox(height: 20),
+            Text(
+              'Book Reading',
+              style: GoogleFonts.dancingScript(
+                fontSize: 48,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             )
           ],
         ),
