@@ -2,6 +2,7 @@ import 'package:book_reading/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -13,11 +14,19 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   void initState() {
+    getUsersData();
+    print(data);
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.of(context).pushNamed('/home');
+      Navigator.of(context).pushReplacementNamed('/home');
     });
 
     super.initState();
+  }
+
+  String? data;
+
+  Future<void> getUsersData() async {
+    this.data = await rootBundle.loadString('assets/data/users.json');
   }
 
   @override
