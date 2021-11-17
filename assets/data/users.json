@@ -24,6 +24,48 @@
                             "chapterNo": 2
                         }
                     ]
+                },
+                {
+                    "title": "Top 10 Business Hacks",
+                    "author": "Gary Venchuk",
+                    "details": "When the earth was flat andeveryone wanted to win the gameof the best and people and winningwith an A game with all the things you have.",
+                    "bookCover": "https://www.portersquarebooks.com/sites/portersquarebooks.com/files/teaspoonearthandsea.jpg",
+                    "rating": 4.9,
+                    "chapters": [
+                        {
+                            "title": "Money",
+                            "description": "Life is about Change",
+                            "pages": 50,
+                            "chapterNo": 1
+                        },
+                        {
+                            "title": "Power",
+                            "description": "Everything loves Power",
+                            "pages": 80,
+                            "chapterNo": 2
+                        }
+                    ]
+                },
+                {
+                    "title": "Top 10 Business Hacks",
+                    "author": "Gary Venchuk",
+                    "details": "When the earth was flat andeveryone wanted to win the gameof the best and people and winningwith an A game with all the things you have.",
+                    "bookCover": "https://www.portersquarebooks.com/sites/portersquarebooks.com/files/teaspoonearthandsea.jpg",
+                    "rating": 4.9,
+                    "chapters": [
+                        {
+                            "title": "Money",
+                            "description": "Life is about Change",
+                            "pages": 50,
+                            "chapterNo": 1
+                        },
+                        {
+                            "title": "Power",
+                            "description": "Everything loves Power",
+                            "pages": 80,
+                            "chapterNo": 2
+                        }
+                    ]
                 }
             ]
         },

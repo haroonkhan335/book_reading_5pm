@@ -1,3 +1,5 @@
+import 'package:book_reading/models/user.dart';
+import 'package:book_reading/widgets/home_widgets/books_catalogue.dart';
 import 'package:book_reading/widgets/home_widgets/circle_shape.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,10 +7,13 @@ import 'package:google_fonts/google_fonts.dart';
 class Home extends StatelessWidget {
   static const routeName = '/home';
 
-  const Home({Key? key}) : super(key: key);
+  const Home({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final User user = ModalRoute.of(context)!.settings.arguments as User;
     return Scaffold(
       body: SafeArea(
         child: ClipRRect(
@@ -32,41 +37,16 @@ class Home extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    flex: 2,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Container(
-                            height: 200,
-                            width: 150,
-                            color: Colors.red,
-                            child: Text('Hello'),
-                          ),
-                        ),
-                        Container(
-                          height: 200,
-                          width: 150,
-                          color: Colors.orange,
-                          child: Text('Hello'),
-                        ),
-                        Container(
-                          height: 200,
-                          width: 150,
-                          color: Colors.purple,
-                          child: Text('Hello'),
-                        ),
-                      ],
-                    ),
+                    flex: 4,
+                    child: BooksCatalogue(books: user.books),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Container(),
                   ),
                   Expanded(
                     flex: 2,
-                    child: Container(color: Colors.blue),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(color: Colors.green),
+                    child: Container(),
                   ),
                 ],
               )

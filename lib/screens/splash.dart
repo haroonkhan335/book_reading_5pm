@@ -19,7 +19,7 @@ class _SplashState extends State<Splash> {
   void initState() {
     getUsersData();
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacementNamed('/home');
+      Navigator.of(context).pushReplacementNamed('/home', arguments: user);
     });
 
     super.initState();
@@ -27,26 +27,15 @@ class _SplashState extends State<Splash> {
 
   String? data;
 
+  late User user;
+
   Future<void> getUsersData() async {
     this.data = await rootBundle.loadString('assets/data/users.json');
 
     if (data != null) {
-      Map<String, dynamic> structuredData = jsonDecode(data!);
+      final structuredData = jsonDecode(data!)["users"]["123456"];
 
-      final Map<String, dynamic> currentUser =
-          structuredData["users"]["123456"];
-
-      final User user = User.fromJson(currentUser);
-
-      print('${user.firstName} ${user.lastName} ${user.books}');
-
-      user.books.forEach((element) {
-        print(element.chapters);
-
-        element.chapters.forEach((element) {
-          print(element.chapterNo);
-        });
-      });
+      this.user = User.fromJson(structuredData);
     }
   }
 
