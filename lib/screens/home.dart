@@ -1,4 +1,5 @@
 import 'package:book_reading/models/user.dart';
+import 'package:book_reading/widgets/home_widgets/best_of_the_day_section.dart';
 import 'package:book_reading/widgets/home_widgets/books_catalogue.dart';
 import 'package:book_reading/widgets/home_widgets/circle_shape.dart';
 import 'package:flutter/material.dart';
@@ -42,10 +43,12 @@ class Home extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 3,
-                    child: Container(),
+                    child: BestOfTheDaySection(
+                      topBook: getMeTopBook(user.books),
+                    ),
                   ),
                   Expanded(
-                    flex: 2,
+                    flex: 1,
                     child: Container(),
                   ),
                 ],
@@ -55,5 +58,13 @@ class Home extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Book getMeTopBook(List<Book> books) {
+    books.sort((a, b) => b.rating.compareTo(a.rating));
+    print(books.first.rating);
+
+    books.map((e) => print(e.rating)).toList();
+    return books.first;
   }
 }

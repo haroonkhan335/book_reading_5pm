@@ -19,7 +19,8 @@ class _SplashState extends State<Splash> {
   void initState() {
     getUsersData();
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacementNamed('/home', arguments: user);
+      Navigator.of(context)
+          .pushReplacementNamed(Home.routeName, arguments: user);
     });
 
     super.initState();
