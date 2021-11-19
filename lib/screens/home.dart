@@ -21,37 +21,29 @@ class Home extends StatelessWidget {
           child: Stack(
             children: [
               CircleShape(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.08,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35.0),
-                    child: Text(
-                      'What are you\nreading today?',
-                      style: GoogleFonts.poppins(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w300,
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.08,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35.0),
+                      child: Text(
+                        'What are you\nreading today?',
+                        style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: BooksCatalogue(books: user.books),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: BestOfTheDaySection(
+                    BooksCatalogue(books: user.books),
+                    BestOfTheDaySection(
                       topBook: getMeTopBook(user.books),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(),
-                  ),
-                ],
+                  ],
+                ),
               )
             ],
           ),

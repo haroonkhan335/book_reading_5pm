@@ -1,4 +1,5 @@
 import 'package:book_reading/models/user.dart';
+import 'package:book_reading/screens/book_screen.dart';
 import 'package:book_reading/utils/helper.dart';
 import 'package:book_reading/widgets/home_widgets/book_about.dart';
 import 'package:book_reading/widgets/home_widgets/books_catalogue.dart';
@@ -72,6 +73,10 @@ class _BookCardsState extends State<BookCards> {
                 ),
                 Expanded(
                   child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(BookScreen.routeName,
+                          arguments: widget.book);
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(

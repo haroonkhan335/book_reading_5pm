@@ -1,3 +1,4 @@
+import 'package:book_reading/screens/book_screen.dart';
 import 'package:book_reading/screens/home.dart';
 import 'package:book_reading/screens/splash.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,9 @@ class BookReading extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/home': (context) => Home(),
         '/': (context) => Splash(),
+        Home.routeName: (context) => Home(),
+        BookScreen.routeName: (context) => BookScreen(),
       },
       theme: ThemeData(
         scaffoldBackgroundColor: Color(0xFFFCF6F7),

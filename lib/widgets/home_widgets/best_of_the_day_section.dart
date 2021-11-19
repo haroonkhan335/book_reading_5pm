@@ -1,5 +1,6 @@
 import 'package:book_reading/models/user.dart';
 import 'package:book_reading/utils/helper.dart';
+import 'package:book_reading/widgets/common/rating.dart';
 import 'package:book_reading/widgets/home_widgets/book_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -55,24 +56,22 @@ class BestOfTheDaySection extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Container(
-                        height: 45,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.amber[600],
+                      Row(
+                        children: [
+                          Rating(rating: topBook.rating),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Container(
+                              // height: 50,
+                              width: screenWidth(context) * 0.35,
+                              child: Text(
+                                topBook.details,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,
+                              ),
                             ),
-                            Text(
-                              topBook.rating.toString(),
-                            ),
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                     ],
                   ),

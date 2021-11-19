@@ -23,46 +23,49 @@ class _BooksCatalogueState extends State<BooksCatalogue> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.only(left: 20.0),
-      scrollDirection: Axis.horizontal,
-      children: widget.books
-          .map(
-            (book) => Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Stack(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.45,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: BookCards(
-                          book: book,
-                          onDetailsPressed: (bool isShowingDetails) {
-                            setState(() {
-                              this.isShowingBook = !isShowingDetails;
-                            });
-                          }),
-                    ),
-                  ),
-                  isShowingBook
-                      ? Positioned(
-                          top: 20,
-                          left: 20,
-                          child: BookCover(
+    return SizedBox(
+      height: screenHeight(context) * 0.4,
+      child: ListView(
+        padding: const EdgeInsets.only(left: 20.0),
+        scrollDirection: Axis.horizontal,
+        children: widget.books
+            .map(
+              (book) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Stack(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: BookCards(
                             book: book,
-                            height: 80,
-                            width: 100,
-                          ),
-                        )
-                      : SizedBox(),
-                ],
+                            onDetailsPressed: (bool isShowingDetails) {
+                              setState(() {
+                                this.isShowingBook = !isShowingDetails;
+                              });
+                            }),
+                      ),
+                    ),
+                    isShowingBook
+                        ? Positioned(
+                            top: 20,
+                            left: 20,
+                            child: BookCover(
+                              book: book,
+                              height: 80,
+                              width: 100,
+                            ),
+                          )
+                        : SizedBox(),
+                  ],
+                ),
               ),
-            ),
-          )
-          .toList(),
+            )
+            .toList(),
+      ),
     );
   }
 }
