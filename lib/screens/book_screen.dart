@@ -1,6 +1,7 @@
 import 'package:book_reading/models/user.dart';
 import 'package:book_reading/utils/helper.dart';
 import 'package:book_reading/widgets/book_screen_widget/book_summary.dart';
+import 'package:book_reading/widgets/book_screen_widget/chapter_tile.dart';
 import 'package:book_reading/widgets/book_screen_widget/details_overlay.dart';
 import 'package:book_reading/widgets/common/rating.dart';
 import 'package:flutter/material.dart';
@@ -39,47 +40,12 @@ class BookScreen extends StatelessWidget {
                     Container(
                       height: screenHeight(context) * 0.35,
                       child: ListView.builder(
-                        itemCount: 10,
+                        itemCount: book!.chapters.length,
                         padding: EdgeInsets.zero,
                         physics: BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
-                          // final Chapter chapter = book!.chapters[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50)),
-                              elevation: 20,
-                              shadowColor: Colors.black,
-                              margin: EdgeInsets.symmetric(
-                                horizontal: 20,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 20),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("HAHAHAHAHA"),
-                                        // 'Chapter ${index + 1}: ${chapter.title}'),
-                                        Text("ksajdlfkajsdf"
-                                            // chapter.description,
-                                            ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.chevron_right,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
+                          final Chapter chapter = book!.chapters[index];
+                          return ChapterTile(chapter: chapter);
                         },
                       ),
                     ),

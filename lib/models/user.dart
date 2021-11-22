@@ -53,7 +53,7 @@ class Book {
 class Chapter {
   String title;
   String description;
-  int pages;
+  List pages;
   int chapterNo;
 
   Chapter({

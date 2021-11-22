@@ -2,6 +2,7 @@ import 'package:book_reading/models/user.dart';
 import 'package:book_reading/widgets/home_widgets/best_of_the_day_section.dart';
 import 'package:book_reading/widgets/home_widgets/books_catalogue.dart';
 import 'package:book_reading/widgets/home_widgets/circle_shape.dart';
+import 'package:book_reading/widgets/home_widgets/continue_reading.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -42,6 +43,7 @@ class Home extends StatelessWidget {
                     BestOfTheDaySection(
                       topBook: getMeTopBook(user.books),
                     ),
+                    ContinueReading(),
                   ],
                 ),
               )
