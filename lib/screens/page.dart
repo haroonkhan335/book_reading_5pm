@@ -40,7 +40,6 @@ class _PageState extends State<Page> {
                         setState(() {
                           pageNo = index + 1;
                           lastReadPage = index;
-                          data.chapter.title = "Haroon";
                         });
                       },
                       itemBuilder: (context, index) {
