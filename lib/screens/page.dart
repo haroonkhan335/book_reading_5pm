@@ -1,6 +1,10 @@
+import 'dart:convert';
+
+import 'package:book_reading/models/left_off_book.dart';
 import 'package:book_reading/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Page extends StatefulWidget {
   Page({Key? key}) : super(key: key);
@@ -37,10 +41,10 @@ class _PageState extends State<Page> {
                     PageView.builder(
                       itemCount: data.chapter.pages.length,
                       onPageChanged: (int index) {
-                        setState(() {
-                          pageNo = index + 1;
-                          lastReadPage = index;
-                        });
+                        saveLeftOffPoint(
+                            book: data.book,
+                            chapter: data.chapter,
+                            page: index);
                       },
                       itemBuilder: (context, index) {
                         final String page = data.chapter.pages[index];
@@ -57,15 +61,26 @@ class _PageState extends State<Page> {
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
-                      child: Container(
-                        height: 30,
-                        width: 50,
-                        child: Text(
-                          '${pageNo}/${data.chapter.pages.length}',
-                          style: GoogleFonts.poppins(
-                            fontSize: 21,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 50,
+                            child: Text(
+                              '${pageNo}/${data.chapter.pages.length}',
+                              style: GoogleFonts.poppins(
+                                fontSize: 21,
+                              ),
+                            ),
                           ),
-                        ),
+                          TextButton(
+                            child: Text('Go back'),
+                            onPressed: () {
+                              Navigator.pop(context, "HAROON KHAN");
+                            },
+                          )
+                        ],
                       ),
                     )
                   ],
@@ -77,10 +92,32 @@ class _PageState extends State<Page> {
       ),
     );
   }
+
+  Future<void> saveLeftOffPoint(
+      {required Book book, required Chapter chapter, required int page}) async {
+    setState(() {
+      pageNo = page + 1;
+    });
+    final LeftOffBook leftOffPoint = LeftOffBook(
+        pageNo: pageNo,
+        author: book.author,
+        bookCover: book.bookCover,
+        chapterNo: chapter.chapterNo,
+        title: book.title,
+        totalChapters: book.chapters.length);
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+
+    sharedPref.setString("lastLeftOff", jsonEncode(leftOffPoint.toJson()));
+  }
 }
 
 class PageArguments {
   final Chapter chapter;
 
-  PageArguments({required this.chapter});
+  final Function onNameChanged;
+
+  final Book book;
+
+  PageArguments(
+      {required this.chapter, required this.onNameChanged, required this.book});
 }

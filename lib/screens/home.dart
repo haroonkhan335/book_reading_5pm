@@ -1,3 +1,4 @@
+import 'package:book_reading/models/left_off_book.dart';
 import 'package:book_reading/models/user.dart';
 import 'package:book_reading/widgets/home_widgets/best_of_the_day_section.dart';
 import 'package:book_reading/widgets/home_widgets/books_catalogue.dart';
@@ -15,7 +16,8 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final User user = ModalRoute.of(context)!.settings.arguments as User;
+    final HomeArguments args =
+        ModalRoute.of(context)!.settings.arguments as HomeArguments;
     return Scaffold(
       body: SafeArea(
         child: ClipRRect(
@@ -39,11 +41,12 @@ class Home extends StatelessWidget {
                         ),
                       ),
                     ),
-                    BooksCatalogue(books: user.books),
+                    BooksCatalogue(books: args.user.books),
                     BestOfTheDaySection(
-                      topBook: getMeTopBook(user.books),
+                      topBook: getMeTopBook(args.user.books),
                     ),
-                    ContinueReading(),
+                    if (args.lastPoint != null)
+                      ContinueReading(lastPoint: args.lastPoint!),
                   ],
                 ),
               )
@@ -61,4 +64,12 @@ class Home extends StatelessWidget {
     books.map((e) => print(e.rating)).toList();
     return books.first;
   }
+}
+
+class HomeArguments {
+  User user;
+
+  LeftOffBook? lastPoint;
+
+  HomeArguments({required this.user, required this.lastPoint});
 }

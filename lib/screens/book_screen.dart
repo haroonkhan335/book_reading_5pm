@@ -45,7 +45,7 @@ class BookScreen extends StatelessWidget {
                         physics: BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           final Chapter chapter = book!.chapters[index];
-                          return ChapterTile(chapter: chapter);
+                          return ChapterTile(chapter: chapter, book: book!);
                         },
                       ),
                     ),
