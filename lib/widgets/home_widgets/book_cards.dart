@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:book_reading/models/left_off_book.dart';
 import 'package:book_reading/models/user.dart';
 import 'package:book_reading/screens/book_screen.dart';
 import 'package:book_reading/utils/helper.dart';
@@ -11,11 +14,14 @@ class BookCards extends StatefulWidget {
     Key? key,
     required this.book,
     required this.onDetailsPressed,
+    required this.onLastPointSaved,
   }) : super(key: key);
 
   final Book book;
 
   final Function(bool) onDetailsPressed;
+
+  final Function(LeftOffBook) onLastPointSaved;
 
   @override
   State<BookCards> createState() => _BookCardsState();
@@ -75,7 +81,12 @@ class _BookCardsState extends State<BookCards> {
                   child: GestureDetector(
                     onTap: () {
                       Navigator.of(context).pushNamed(BookScreen.routeName,
-                          arguments: widget.book);
+                          arguments: BookScreenArgs(
+                              book: widget.book,
+                              onLastPointSaved: (lastPoint) {
+                                log('LasT POINT SAVED IN BOOK CARDS');
+                                widget.onLastPointSaved(lastPoint);
+                              }));
                     },
                     child: Container(
                       decoration: BoxDecoration(

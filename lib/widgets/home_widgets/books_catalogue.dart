@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:book_reading/models/left_off_book.dart';
 import 'package:book_reading/models/user.dart';
 import 'package:book_reading/utils/helper.dart';
 import 'package:book_reading/widgets/home_widgets/book_about.dart';
@@ -10,9 +13,11 @@ class BooksCatalogue extends StatefulWidget {
   BooksCatalogue({
     Key? key,
     required this.books,
+    required this.onLastPointSaved,
   }) : super(key: key);
 
   final List<Book> books;
+  final Function(LeftOffBook) onLastPointSaved;
 
   @override
   State<BooksCatalogue> createState() => _BooksCatalogueState();
@@ -41,6 +46,10 @@ class _BooksCatalogueState extends State<BooksCatalogue> {
                       ),
                       child: Center(
                         child: BookCards(
+                            onLastPointSaved: (lastPoint) {
+                              log('LAST POIN WAS CALLED IN BOOKS CATALOGUE');
+                              widget.onLastPointSaved(lastPoint);
+                            },
                             book: book,
                             onDetailsPressed: (bool isShowingDetails) {
                               setState(() {
@@ -54,7 +63,7 @@ class _BooksCatalogueState extends State<BooksCatalogue> {
                             top: 20,
                             left: 20,
                             child: BookCover(
-                              book: book,
+                              bookCover: book.bookCover,
                               height: 80,
                               width: 100,
                             ),

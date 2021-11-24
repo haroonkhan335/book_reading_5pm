@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:book_reading/models/left_off_book.dart';
 import 'package:book_reading/models/user.dart';
 import 'package:book_reading/screens/page.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +11,12 @@ class ChapterTile extends StatefulWidget {
     Key? key,
     required this.chapter,
     required this.book,
+    required this.onLastPointSaved,
   }) : super(key: key);
 
   Chapter chapter;
+
+  Function(LeftOffBook) onLastPointSaved;
 
   Book book;
 
@@ -34,11 +38,9 @@ class _ChapterTileState extends State<ChapterTile> {
                   arguments: PageArguments(
                       chapter: widget.chapter,
                       book: widget.book,
-                      onNameChanged: (Chapter chapter) {
-                        log("onNameChanged was called. Setting the state");
-                        setState(() {
-                          widget.chapter = chapter;
-                        });
+                      onLastPointSaved: (leftOffBook) {
+                        log('LAST POIN SAVED PRINTED CHAPTER TILE');
+                        widget.onLastPointSaved(leftOffBook);
                       })) as String;
 
           print(data);

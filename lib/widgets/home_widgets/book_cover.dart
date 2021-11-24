@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 class BookCover extends StatelessWidget {
   const BookCover({
     Key? key,
-    required this.book,
+    required this.bookCover,
     required this.height,
     required this.width,
   }) : super(key: key);
 
-  final Book book;
+  final String bookCover;
 
   final double width;
   final double height;
@@ -22,7 +22,7 @@ class BookCover extends StatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: NetworkImage(
-            book.bookCover,
+            bookCover,
           ),
         ),
       ),

@@ -1,9 +1,13 @@
+import 'dart:developer';
+
+import 'package:book_reading/models/left_off_book.dart';
 import 'package:book_reading/models/user.dart';
 import 'package:book_reading/utils/helper.dart';
 import 'package:book_reading/widgets/book_screen_widget/book_summary.dart';
 import 'package:book_reading/widgets/book_screen_widget/chapter_tile.dart';
 import 'package:book_reading/widgets/book_screen_widget/details_overlay.dart';
 import 'package:book_reading/widgets/common/rating.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,47 +16,52 @@ class BookScreen extends StatelessWidget {
 
   static const String routeName = '/book_screen';
 
-  Book? book;
+  late BookScreenArgs args;
 
   @override
   Widget build(BuildContext context) {
     if (ModalRoute.of(context) != null) {
       if (ModalRoute.of(context)!.settings.arguments != null) {
-        book = ModalRoute.of(context)!.settings.arguments as Book;
+        args = ModalRoute.of(context)!.settings.arguments as BookScreenArgs;
       }
     }
     return Scaffold(
-      body: book == null
-          ? Center(child: Text('No Book Found'))
-          : Stack(
-              children: [
-                CoverBackground(
-                  coverUrl: book!.bookCover,
+      body: Stack(
+        children: [
+          CoverBackground(
+            coverUrl: args.book.bookCover,
+          ),
+          DetailsOverlay(
+            book: args.book,
+          ),
+          Column(
+            children: [
+              SizedBox(
+                height: screenHeight(context) * 0.4,
+              ),
+              Container(
+                height: screenHeight(context) * 0.35,
+                child: ListView.builder(
+                  dragStartBehavior: DragStartBehavior.down,
+                  itemCount: args.book.chapters.length,
+                  padding: EdgeInsets.zero,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final Chapter chapter = args.book.chapters[index];
+                    return ChapterTile(
+                        chapter: chapter,
+                        book: args.book,
+                        onLastPointSaved: (LeftOffBook lastPoint) {
+                          log("LAST POINT WAS SAVED IN BOOK SCREEN WIDGET");
+                          args.onLastPointSaved(lastPoint);
+                        });
+                  },
                 ),
-                DetailsOverlay(
-                  book: book!,
-                ),
-                Column(
-                  children: [
-                    SizedBox(
-                      height: screenHeight(context) * 0.4,
-                    ),
-                    Container(
-                      height: screenHeight(context) * 0.35,
-                      child: ListView.builder(
-                        itemCount: book!.chapters.length,
-                        padding: EdgeInsets.zero,
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          final Chapter chapter = book!.chapters[index];
-                          return ChapterTile(chapter: chapter, book: book!);
-                        },
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
@@ -79,4 +88,12 @@ class CoverBackground extends StatelessWidget {
       ),
     );
   }
+}
+
+class BookScreenArgs {
+  Book book;
+
+  Function(LeftOffBook) onLastPointSaved;
+
+  BookScreenArgs({required this.book, required this.onLastPointSaved});
 }

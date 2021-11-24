@@ -44,7 +44,8 @@ class _PageState extends State<Page> {
                         saveLeftOffPoint(
                             book: data.book,
                             chapter: data.chapter,
-                            page: index);
+                            page: index,
+                            onLastPointSaved: data.onLastPointSaved);
                       },
                       itemBuilder: (context, index) {
                         final String page = data.chapter.pages[index];
@@ -74,12 +75,6 @@ class _PageState extends State<Page> {
                               ),
                             ),
                           ),
-                          TextButton(
-                            child: Text('Go back'),
-                            onPressed: () {
-                              Navigator.pop(context, "HAROON KHAN");
-                            },
-                          )
                         ],
                       ),
                     )
@@ -94,7 +89,10 @@ class _PageState extends State<Page> {
   }
 
   Future<void> saveLeftOffPoint(
-      {required Book book, required Chapter chapter, required int page}) async {
+      {required Book book,
+      required Chapter chapter,
+      required int page,
+      required Function(LeftOffBook) onLastPointSaved}) async {
     setState(() {
       pageNo = page + 1;
     });
@@ -105,6 +103,8 @@ class _PageState extends State<Page> {
         chapterNo: chapter.chapterNo,
         title: book.title,
         totalChapters: book.chapters.length);
+
+    onLastPointSaved(leftOffPoint);
     SharedPreferences sharedPref = await SharedPreferences.getInstance();
 
     sharedPref.setString("lastLeftOff", jsonEncode(leftOffPoint.toJson()));
@@ -114,10 +114,12 @@ class _PageState extends State<Page> {
 class PageArguments {
   final Chapter chapter;
 
-  final Function onNameChanged;
+  final Function(LeftOffBook) onLastPointSaved;
 
   final Book book;
 
   PageArguments(
-      {required this.chapter, required this.onNameChanged, required this.book});
+      {required this.chapter,
+      required this.onLastPointSaved,
+      required this.book});
 }

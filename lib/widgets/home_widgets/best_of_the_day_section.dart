@@ -83,7 +83,7 @@ class BestOfTheDaySection extends StatelessWidget {
             right: 20,
             top: -10,
             child: BookCover(
-              book: topBook,
+              bookCover: topBook.bookCover,
               height: 150,
               width: 130,
             ),
