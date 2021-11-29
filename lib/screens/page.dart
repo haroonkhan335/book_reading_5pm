@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:book_reading/models/left_off_book.dart';
 import 'package:book_reading/models/user.dart';
+import 'package:book_reading/providers/book_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Page extends StatefulWidget {
@@ -16,19 +18,16 @@ class Page extends StatefulWidget {
 }
 
 class _PageState extends State<Page> {
-  int pageNo = 0;
-
   Chapter? lastReadChapter;
   int? lastReadPage;
 
   @override
   Widget build(BuildContext context) {
-    final data = ModalRoute.of(context)!.settings.arguments as PageArguments;
-    lastReadChapter = data.chapter;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(data.chapter.title),
+        title: Text(Provider.of<BookProvider>(context, listen: false)
+            .currentlyReadingChapter!
+            .title),
       ),
       body: Column(
         children: [
@@ -39,16 +38,20 @@ class _PageState extends State<Page> {
                 child: Stack(
                   children: [
                     PageView.builder(
-                      itemCount: data.chapter.pages.length,
+                      itemCount:
+                          Provider.of<BookProvider>(context, listen: false)
+                              .currentlyReadingChapter!
+                              .pages
+                              .length,
                       onPageChanged: (int index) {
-                        saveLeftOffPoint(
-                            book: data.book,
-                            chapter: data.chapter,
-                            page: index,
-                            onLastPointSaved: data.onLastPointSaved);
+                        Provider.of<BookProvider>(context, listen: false)
+                            .changePage(index);
                       },
                       itemBuilder: (context, index) {
-                        final String page = data.chapter.pages[index];
+                        final String page =
+                            Provider.of<BookProvider>(context, listen: false)
+                                .currentlyReadingChapter!
+                                .pages[index];
                         return Text(
                           page,
                           textAlign: TextAlign.justify,
@@ -68,12 +71,15 @@ class _PageState extends State<Page> {
                           Container(
                             height: 30,
                             width: 50,
-                            child: Text(
-                              '${pageNo}/${data.chapter.pages.length}',
-                              style: GoogleFonts.poppins(
-                                fontSize: 21,
-                              ),
-                            ),
+                            child: Consumer<BookProvider>(
+                                builder: (context, provider, _) {
+                              return Text(
+                                '${provider.currentlyReadingPage}/${Provider.of<BookProvider>(context, listen: false).currentlyReadingChapter!.pages.length}',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 21,
+                                ),
+                              );
+                            }),
                           ),
                         ],
                       ),
@@ -87,39 +93,4 @@ class _PageState extends State<Page> {
       ),
     );
   }
-
-  Future<void> saveLeftOffPoint(
-      {required Book book,
-      required Chapter chapter,
-      required int page,
-      required Function(LeftOffBook) onLastPointSaved}) async {
-    setState(() {
-      pageNo = page + 1;
-    });
-    final LeftOffBook leftOffPoint = LeftOffBook(
-        pageNo: pageNo,
-        author: book.author,
-        bookCover: book.bookCover,
-        chapterNo: chapter.chapterNo,
-        title: book.title,
-        totalChapters: book.chapters.length);
-
-    onLastPointSaved(leftOffPoint);
-    SharedPreferences sharedPref = await SharedPreferences.getInstance();
-
-    sharedPref.setString("lastLeftOff", jsonEncode(leftOffPoint.toJson()));
-  }
-}
-
-class PageArguments {
-  final Chapter chapter;
-
-  final Function(LeftOffBook) onLastPointSaved;
-
-  final Book book;
-
-  PageArguments(
-      {required this.chapter,
-      required this.onLastPointSaved,
-      required this.book});
 }

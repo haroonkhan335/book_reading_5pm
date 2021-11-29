@@ -1,18 +1,17 @@
 import 'package:book_reading/models/left_off_book.dart';
 import 'package:book_reading/models/user.dart';
+import 'package:book_reading/providers/book_provider.dart';
 import 'package:book_reading/utils/helper.dart';
 import 'package:book_reading/widgets/book_screen_widget/chapter_tile.dart';
 import 'package:book_reading/widgets/home_widgets/book_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class ContinueReading extends StatefulWidget {
   ContinueReading({
     Key? key,
-    required this.lastPoint,
   }) : super(key: key);
-
-  LeftOffBook lastPoint;
 
   @override
   _ContinueReadingState createState() => _ContinueReadingState();
@@ -54,10 +53,10 @@ class _ContinueReadingState extends State<ContinueReading> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(widget.lastPoint.title),
+                                Text(lastPoint.title),
                                 // 'Chapter ${index + 1}: ${chapter.title}'),
                                 Text(
-                                  widget.lastPoint.author,
+                                  lastPoint.author,
                                 )
                               ],
                             ),
@@ -67,12 +66,12 @@ class _ContinueReadingState extends State<ContinueReading> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                        'Chapter ${widget.lastPoint.chapterNo} of ${widget.lastPoint.totalChapters}'),
-                                    Text('Page : ${widget.lastPoint.pageNo}'),
+                                        'Chapter ${lastPoint.chapterNo} of ${lastPoint.totalChapters}'),
+                                    Text('Page : ${lastPoint.pageNo}'),
                                   ],
                                 ),
                                 BookCover(
-                                    bookCover: widget.lastPoint.bookCover,
+                                    bookCover: lastPoint.bookCover,
                                     height: 50,
                                     width: 50)
                               ],
@@ -104,8 +103,7 @@ class _ContinueReadingState extends State<ContinueReading> {
                           child: Container(
                             height: 5,
                             width: calculateWidth(
-                                widget.lastPoint.totalChapters,
-                                widget.lastPoint.chapterNo),
+                                lastPoint.totalChapters, lastPoint.chapterNo),
                             decoration: BoxDecoration(
                               color: Colors.red,
                               borderRadius: BorderRadius.circular(50),
@@ -123,6 +121,8 @@ class _ContinueReadingState extends State<ContinueReading> {
       ],
     );
   }
+
+  LeftOffBook get lastPoint => Provider.of<BookProvider>(context).lastPoint!;
 
   double calculateWidth(int totalChapter, int chapterNo) {
     double firstChapWidth = screenWidth(context) / totalChapter;

@@ -2,26 +2,22 @@ import 'dart:developer';
 
 import 'package:book_reading/models/left_off_book.dart';
 import 'package:book_reading/models/user.dart';
+import 'package:book_reading/providers/book_provider.dart';
 import 'package:book_reading/screens/book_screen.dart';
 import 'package:book_reading/utils/helper.dart';
 import 'package:book_reading/widgets/home_widgets/book_about.dart';
 import 'package:book_reading/widgets/home_widgets/books_catalogue.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class BookCards extends StatefulWidget {
   BookCards({
     Key? key,
     required this.book,
-    required this.onDetailsPressed,
-    required this.onLastPointSaved,
   }) : super(key: key);
 
   final Book book;
-
-  final Function(bool) onDetailsPressed;
-
-  final Function(LeftOffBook) onLastPointSaved;
 
   @override
   State<BookCards> createState() => _BookCardsState();
@@ -65,7 +61,6 @@ class _BookCardsState extends State<BookCards> {
                       setState(() {
                         isShowingDetails = !isShowingDetails;
                       });
-                      widget.onDetailsPressed(isShowingDetails);
                     },
                     child: Center(
                       child: Text(
@@ -80,13 +75,11 @@ class _BookCardsState extends State<BookCards> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed(BookScreen.routeName,
-                          arguments: BookScreenArgs(
-                              book: widget.book,
-                              onLastPointSaved: (lastPoint) {
-                                log('LasT POINT SAVED IN BOOK CARDS');
-                                widget.onLastPointSaved(lastPoint);
-                              }));
+                      Provider.of<BookProvider>(context, listen: false)
+                          .currentlyReadingBook = widget.book;
+                      Navigator.of(context).pushNamed(
+                        BookScreen.routeName,
+                      );
                     },
                     child: Container(
                       decoration: BoxDecoration(

@@ -1,38 +1,27 @@
-import 'dart:developer';
-
-import 'package:book_reading/models/left_off_book.dart';
 import 'package:book_reading/models/user.dart';
+import 'package:book_reading/providers/book_provider.dart';
 import 'package:book_reading/utils/helper.dart';
-import 'package:book_reading/widgets/book_screen_widget/book_summary.dart';
 import 'package:book_reading/widgets/book_screen_widget/chapter_tile.dart';
 import 'package:book_reading/widgets/book_screen_widget/details_overlay.dart';
-import 'package:book_reading/widgets/common/rating.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class BookScreen extends StatelessWidget {
   BookScreen({Key? key}) : super(key: key);
 
   static const String routeName = '/book_screen';
 
-  late BookScreenArgs args;
-
   @override
   Widget build(BuildContext context) {
-    if (ModalRoute.of(context) != null) {
-      if (ModalRoute.of(context)!.settings.arguments != null) {
-        args = ModalRoute.of(context)!.settings.arguments as BookScreenArgs;
-      }
-    }
     return Scaffold(
       body: Stack(
         children: [
           CoverBackground(
-            coverUrl: args.book.bookCover,
+            coverUrl: bookProvider(context).currentlyReadingBook!.bookCover,
           ),
           DetailsOverlay(
-            book: args.book,
+            book: bookProvider(context).currentlyReadingBook!,
           ),
           Column(
             children: [
@@ -43,18 +32,19 @@ class BookScreen extends StatelessWidget {
                 height: screenHeight(context) * 0.35,
                 child: ListView.builder(
                   dragStartBehavior: DragStartBehavior.down,
-                  itemCount: args.book.chapters.length,
+                  itemCount: bookProvider(context)
+                      .currentlyReadingBook!
+                      .chapters
+                      .length,
                   padding: EdgeInsets.zero,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    final Chapter chapter = args.book.chapters[index];
+                    final Chapter chapter = bookProvider(context)
+                        .currentlyReadingBook!
+                        .chapters[index];
                     return ChapterTile(
-                        chapter: chapter,
-                        book: args.book,
-                        onLastPointSaved: (LeftOffBook lastPoint) {
-                          log("LAST POINT WAS SAVED IN BOOK SCREEN WIDGET");
-                          args.onLastPointSaved(lastPoint);
-                        });
+                      chapter: chapter,
+                    );
                   },
                 ),
               ),
@@ -64,6 +54,8 @@ class BookScreen extends StatelessWidget {
       ),
     );
   }
+
+  BookProvider bookProvider(context) => Provider.of<BookProvider>(context);
 }
 
 class CoverBackground extends StatelessWidget {
@@ -93,7 +85,5 @@ class CoverBackground extends StatelessWidget {
 class BookScreenArgs {
   Book book;
 
-  Function(LeftOffBook) onLastPointSaved;
-
-  BookScreenArgs({required this.book, required this.onLastPointSaved});
+  BookScreenArgs({required this.book});
 }

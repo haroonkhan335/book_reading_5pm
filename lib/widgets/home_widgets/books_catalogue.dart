@@ -2,22 +2,19 @@ import 'dart:developer';
 
 import 'package:book_reading/models/left_off_book.dart';
 import 'package:book_reading/models/user.dart';
+import 'package:book_reading/providers/book_provider.dart';
 import 'package:book_reading/utils/helper.dart';
 import 'package:book_reading/widgets/home_widgets/book_about.dart';
 import 'package:book_reading/widgets/home_widgets/book_cards.dart';
 import 'package:book_reading/widgets/home_widgets/book_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class BooksCatalogue extends StatefulWidget {
   BooksCatalogue({
     Key? key,
-    required this.books,
-    required this.onLastPointSaved,
   }) : super(key: key);
-
-  final List<Book> books;
-  final Function(LeftOffBook) onLastPointSaved;
 
   @override
   State<BooksCatalogue> createState() => _BooksCatalogueState();
@@ -33,7 +30,7 @@ class _BooksCatalogueState extends State<BooksCatalogue> {
       child: ListView(
         padding: const EdgeInsets.only(left: 20.0),
         scrollDirection: Axis.horizontal,
-        children: widget.books
+        children: bookProvider.user.books
             .map(
               (book) => Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -45,17 +42,7 @@ class _BooksCatalogueState extends State<BooksCatalogue> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
-                        child: BookCards(
-                            onLastPointSaved: (lastPoint) {
-                              log('LAST POIN WAS CALLED IN BOOKS CATALOGUE');
-                              widget.onLastPointSaved(lastPoint);
-                            },
-                            book: book,
-                            onDetailsPressed: (bool isShowingDetails) {
-                              setState(() {
-                                this.isShowingBook = !isShowingDetails;
-                              });
-                            }),
+                        child: BookCards(book: book),
                       ),
                     ),
                     isShowingBook
@@ -77,6 +64,9 @@ class _BooksCatalogueState extends State<BooksCatalogue> {
       ),
     );
   }
+
+  BookProvider get bookProvider =>
+      Provider.of<BookProvider>(context, listen: false);
 }
 
 class BookDetails extends StatelessWidget {
